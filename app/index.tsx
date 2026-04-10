@@ -7,7 +7,13 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.profileCard}>
-        <ProfilCard />
+        <ProfilCard
+          firstName="Witold"
+          lastName="Światowy"
+          title="Software Engineer"
+        />
+        <ProfilCard firstName="John" lastName="Doe" title="Product Manager" />
+        <ProfilCard firstName="Jane" lastName="Smith" title="Designer" />
       </SafeAreaView>
     </SafeAreaProvider>
   );
