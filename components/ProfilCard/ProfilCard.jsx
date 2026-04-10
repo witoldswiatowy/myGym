@@ -3,8 +3,21 @@ import { styles } from "./ProfileCard.style";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-export function ProfilCard(props) {
-  console.log(props);
+export function ProfilCard({
+  firstName,
+  lastName,
+  title,
+  age,
+  isOpenToWork,
+  car,
+  doSomething,
+}) {
+  console.log({ firstName, lastName, title, age, isOpenToWork, car });
+  doSomething();
+
+  function greetings() {
+    return "Hello from greetings function";
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -16,9 +29,12 @@ export function ProfilCard(props) {
         </View>
         <View style={styles.info}>
           <Text style={styles.name}>
-            {props.firstName} {props.lastName}
+            {firstName} {lastName}
           </Text>
-          <Text style={styles.title}>{props.title}</Text>
+          <Text style={styles.title}>
+            {title}
+            {greetings()}
+          </Text>
         </View>
       </View>
       <View style={styles.links}>
