@@ -31,5 +31,14 @@ export const styles = StyleSheet.create({
     height: 70,
     borderRadius: "50%",
   },
-  links: {},
+  links: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-around",
+  },
+  linksBtn: {
+    borderRadius: "50%",
+    padding: 10,
+    backgroundColor: "#eee",
+  },
 });

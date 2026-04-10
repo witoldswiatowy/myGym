@@ -6,9 +6,7 @@ import { ProfilCard } from "../components/ProfilCard/ProfilCard";
 export default function Index() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      >
+      <SafeAreaView style={styles.profileCard}>
         <ProfilCard />
       </SafeAreaView>
     </SafeAreaProvider>

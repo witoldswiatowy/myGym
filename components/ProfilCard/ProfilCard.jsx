@@ -1,5 +1,7 @@
 import { Text, TouchableOpacity, View, Image } from "react-native";
 import { styles } from "./ProfileCard.style";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export function ProfilCard() {
   return (
@@ -17,8 +19,18 @@ export function ProfilCard() {
         </View>
       </View>
       <View style={styles.links}>
-        <TouchableOpacity>
-          <Text>Click me !</Text>
+        <TouchableOpacity style={styles.linksBtn}>
+          <FontAwesome name="twitter" size={24} color="#1DA1F2" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.linksBtn}>
+          <FontAwesome name="linkedin-square" size={24} color="#0A66C2" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.linksBtn}>
+          <FontAwesome5 name="github" size={24} color="#333" />
+          {/* 
+          https://docs.expo.dev/guides/icons/ - dokumentacja ikon expo
+           https://icons.expo.fyi/Index - do wyszukiwania ikon expo
+           */}
         </TouchableOpacity>
       </View>
     </View>
