@@ -11,9 +11,7 @@ export default function Index() {
           firstName="Witold"
           lastName="Światowy"
           title="Software Engineer"
-        >
-          Hi
-        </ProfilCard>
+        />
         <ProfilCard firstName="John" lastName="Doe" title="Product Manager" />
         <ProfilCard firstName="Jane" lastName="Smith" title="Designer" />
       </SafeAreaView>

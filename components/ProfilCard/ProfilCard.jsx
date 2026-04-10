@@ -3,7 +3,7 @@ import { styles } from "./ProfileCard.style";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-export function ProfilCard({ firstName, lastName, title, children }) {
+export function ProfilCard({ firstName, lastName, title }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -15,7 +15,7 @@ export function ProfilCard({ firstName, lastName, title, children }) {
         </View>
         <View style={styles.info}>
           <Text style={styles.name}>
-            {children} {firstName} {lastName}
+            {firstName} {lastName}
           </Text>
           <Text style={styles.title}>{title}</Text>
         </View>
