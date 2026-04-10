@@ -6,13 +6,15 @@ import { Profil } from "../components/Profil/Profil";
 export default function Index() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
-        <Text>Welcome !</Text>
-        <Profil />
-        <Text style={styles.title}>Welcome !!</Text>
-        <View style={styles.square}>
-          <Text style={styles.innerText}> Text w boxie </Text>
-        </View>
+      <SafeAreaView
+        // style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+      >
+        <View style={styles.box1}></View>
+        <View style={styles.box2}></View>
+        <View style={styles.box3}></View>
+        <View style={styles.box4}></View>
+        <View style={styles.box5}></View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
