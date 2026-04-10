@@ -11,23 +11,9 @@ export default function Index() {
           firstName="Witold"
           lastName="Światowy"
           title="Software Engineer"
-          age={30}
-          car={{ brand: "Mustang", year: 1969 }}
-          isOpenToWork={true}
-          doSomething={() => console.log("Hello from ProfilCard!")}
         />
-        <ProfilCard
-          firstName="John"
-          lastName="Doe"
-          title="Product Manager"
-          doSomething={() => console.log("Hello from ProfilCard!")}
-        />
-        <ProfilCard
-          firstName="Jane"
-          lastName="Smith"
-          title="Designer"
-          doSomething={() => console.log("Hello from ProfilCard!")}
-        />
+        <ProfilCard firstName="John" lastName="Doe" title="Product Manager" />
+        <ProfilCard firstName="Jane" lastName="Smith" title="Designer" />
       </SafeAreaView>
     </SafeAreaProvider>
   );
