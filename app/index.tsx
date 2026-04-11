@@ -2,16 +2,18 @@ import { Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../App.style";
 import { ProfilCard } from "../components/ProfilCard/ProfilCard";
+import { AgeCounter } from "../components/AgeCounter/AgeCounter";
 
 export default function Index() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.profileCard}>
+        <AgeCounter age={33} />
         <ProfilCard
           firstName={"Witold"}
           lastName={"Światowy"}
           title={"Software Engineer"}
-          age={32}
+          age={33}
           isOpenToWork
         />
         <ProfilCard
