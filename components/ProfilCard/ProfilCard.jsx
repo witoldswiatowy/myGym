@@ -3,8 +3,17 @@ import { styles } from "./ProfileCard.style";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { AgeCounter } from "../AgeCounter/AgeCounter";
+import { useState } from "react";
 
-export function ProfilCard({ firstName, lastName, title, age, isOpenToWork }) {
+export function ProfilCard({
+  firstName,
+  lastName,
+  title,
+  initialAge,
+  isOpenToWork,
+}) {
+  const [age, setAge] = useState(initialAge);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -40,7 +49,7 @@ export function ProfilCard({ firstName, lastName, title, age, isOpenToWork }) {
              https://icons.expo.fyi/Index - do wyszukiwania ikon expo
              */}
         </TouchableOpacity>
-        <AgeCounter age={age} />
+        <AgeCounter age={age} setAge={setAge} />
       </View>
     </View>
   );
