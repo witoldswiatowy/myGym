@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
+import { DisplayAge } from "../DisplayAge/DisplayAge";
 
 export function AgeCounter({ age }) {
   const [ag, setAg] = useState(age);
@@ -15,7 +16,7 @@ export function AgeCounter({ age }) {
       <TouchableOpacity onPress={increaseAge}>
         <Text>Increase age</Text>
       </TouchableOpacity>
-      <Text>{ag} years old</Text>
+      <DisplayAge age={ag} />
     </>
   );
 }
