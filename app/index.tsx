@@ -1,3 +1,4 @@
+import { Platform, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../App.style";
 import { ProfilCard } from "../components/ProfilCard/ProfilCard";
@@ -24,6 +25,8 @@ export default function Index() {
 
   return (
     <SafeAreaProvider>
+      {Platform.OS === "android" && <Text> Hi on Android</Text>}
+      {Platform.OS === "ios" && <Text> Hi on IOS</Text>}
       <SafeAreaView style={styles.profileCard}>
         <ProfilCard
           firstName={"Witold"}
