@@ -11,7 +11,7 @@ export function ProfilCard({
   title,
   initialAge,
   isOpenToWork,
-  onPressGithub,
+  onPressSocialMediaIcon,
 }) {
   const [age, setAge] = useState(initialAge);
 
@@ -37,13 +37,22 @@ export function ProfilCard({
         </View>
       </View>
       <View style={styles.links}>
-        <TouchableOpacity style={styles.linksBtn}>
+        <TouchableOpacity
+          onPress={() => onPressSocialMediaIcon("twitter")}
+          style={styles.linksBtn}
+        >
           <FontAwesome name="twitter" size={24} color="#1DA1F2" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.linksBtn}>
+        <TouchableOpacity
+          onPress={() => onPressSocialMediaIcon("linkedin")}
+          style={styles.linksBtn}
+        >
           <FontAwesome name="linkedin-square" size={24} color="#0A66C2" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onPressGithub} style={styles.linksBtn}>
+        <TouchableOpacity
+          onPress={() => onPressSocialMediaIcon("github")}
+          style={styles.linksBtn}
+        >
           <FontAwesome5 name="github" size={24} color="#333" />
           {/*
             https://docs.expo.dev/guides/icons/ - dokumentacja ikon expo
