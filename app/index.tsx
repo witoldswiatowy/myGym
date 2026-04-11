@@ -1,8 +1,13 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../App.style";
 import { ProfilCard } from "../components/ProfilCard/ProfilCard";
+import { Linking } from "react-native";
 
 export default function Index() {
+  function goToGithub() {
+    Linking.openURL("https://github.com/witoldswiatowy");
+  }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.profileCard}>
@@ -12,6 +17,7 @@ export default function Index() {
           title={"Software Engineer"}
           initialAge={33}
           isOpenToWork
+          onPressGithub={goToGithub}
         />
         <ProfilCard
           firstName={"John"}
