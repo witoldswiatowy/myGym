@@ -8,12 +8,26 @@ export default function Index() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.profileCard}>
         <ProfilCard
-          firstName="Witold"
-          lastName="Światowy"
-          title="Software Engineer"
+          firstName={"Witold"}
+          lastName={"Światowy"}
+          title={"Software Engineer"}
+          age={32}
+          isHappy
         />
-        <ProfilCard firstName="John" lastName="Doe" title="Product Manager" />
-        <ProfilCard firstName="Jane" lastName="Smith" title="Designer" />
+        <ProfilCard
+          firstName={"John"}
+          lastName={"Doe"}
+          title={"Product Manager"}
+          age={28}
+          isHappy={false}
+        />
+        <ProfilCard
+          firstName={"Jane"}
+          lastName={"Smith"}
+          title={"Designer"}
+          age={0} // bo zero jest falsy, więc nie będzie wyświetlane za pomocą warunku age && <Text>...</Text>
+          isHappy={true}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   );
