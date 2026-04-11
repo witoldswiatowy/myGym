@@ -6,7 +6,6 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.profileCard}>
-        {/* <AgeCounter age={33} /> */}
         <ProfilCard
           firstName={"Witold"}
           lastName={"Światowy"}
