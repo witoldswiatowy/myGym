@@ -12,21 +12,21 @@ export default function Index() {
           lastName={"Światowy"}
           title={"Software Engineer"}
           age={32}
-          isHappy
+          isOpenToWork
         />
         <ProfilCard
           firstName={"John"}
           lastName={"Doe"}
           title={"Product Manager"}
           age={28}
-          isHappy={false}
+          isOpenToWork={false}
         />
         <ProfilCard
           firstName={"Jane"}
           lastName={"Smith"}
           title={"Designer"}
           age={0} // bo zero jest falsy, więc nie będzie wyświetlane za pomocą warunku age && <Text>...</Text>
-          isHappy={true}
+          isOpenToWork={true}
         />
       </SafeAreaView>
     </SafeAreaProvider>
