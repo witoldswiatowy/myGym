@@ -1,15 +1,13 @@
 import { Text, View } from "react-native";
+import { Screen } from "../src/components/common/Screen";
+import { styles } from "./app.style";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <Screen>
+      <View style={styles.headerElement}>
+        <Text style={styles.headerTitle}>myGym</Text>
+      </View>
+    </Screen>
   );
 }
