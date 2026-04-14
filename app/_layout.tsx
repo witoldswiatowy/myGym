@@ -73,6 +73,19 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
+          name="planner/index"
+          options={{
+            title: "Planner",
+            tabBarIcon: ({ color, size, focused }) => (
+              <Ionicons
+                name={focused ? "calendar" : "calendar-outline"}
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="menu/index"
           listeners={{
             tabPress: (e) => {
@@ -101,19 +114,6 @@ export default function RootLayout() {
           name="about-me/index"
           options={{
             href: null,
-          }}
-        />
-        <Tabs.Screen
-          name="planner/index"
-          options={{
-            title: "Planner",
-            tabBarIcon: ({ color, size, focused }) => (
-              <Ionicons
-                name={focused ? "calendar" : "calendar-outline"}
-                size={size}
-                color={color}
-              />
-            ),
           }}
         />
       </Tabs>

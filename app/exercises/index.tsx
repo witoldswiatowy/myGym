@@ -1,5 +1,8 @@
 import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
+import ExerciseTableHeader from "@/src/components/exercises/exercise-table-header";
+import ExerciseTableRow from "@/src/components/exercises/exercise-table-row";
+import { localStyles } from "@/src/components/exercises/exercises.style";
 import { EQUIPMENT } from "@/src/data/equipment.data";
 import { MUSCLES } from "@/src/data/muscles.data";
 import { TAGS } from "@/src/data/tags.data";
@@ -8,9 +11,6 @@ import { ExerciseRepository } from "@/src/repositories/exercise.repository";
 import { useEffect, useMemo, useState } from "react";
 import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import ExerciseTableHeader from "./exercise-table-header";
-import ExerciseTableRow from "./exercise-table-row";
-import { localStyles } from "./exercises.style";
 
 export default function ExercisesScreen() {
   const insets = useSafeAreaInsets();
