@@ -1,6 +1,6 @@
+import { spacing } from "@/src/theme/spacing";
 import { ReactNode } from "react";
 import { View } from "react-native";
-import { spacing } from "../../theme/spacing";
 
 type ScreenProps = {
   children: ReactNode;

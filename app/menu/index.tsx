@@ -1,6 +1,6 @@
+import { Screen } from "@/src/components/common/Screen";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
-import { Screen } from "../../src/components/common/Screen";
 
 export default function MenuScreen() {
   return (
