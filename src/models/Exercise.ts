@@ -5,6 +5,7 @@ export type TagId = string;
 export interface Exercise {
   id: string;
   name: string;
+  nameEn: string;
 
   primaryMuscleId: MuscleId;
   secondaryMuscleIds: MuscleId[];
