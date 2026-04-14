@@ -1,11 +1,16 @@
+import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
+import { EQUIPMENT } from "@/src/data/equipment.data";
 import { MUSCLES } from "@/src/data/muscles.data";
+import { TAGS } from "@/src/data/tags.data";
 import { Exercise } from "@/src/models/Exercise";
 import { ExerciseRepository } from "@/src/repositories/exercise.repository";
-import { useEffect, useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { useEffect, useMemo, useState } from "react";
+import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { styles } from "../app.style";
+import ExerciseTableHeader from "./exercise-table-header";
+import ExerciseTableRow from "./exercise-table-row";
+import { localStyles } from "./exercises.style";
 
 export default function ExercisesScreen() {
   const insets = useSafeAreaInsets();
@@ -15,10 +20,20 @@ export default function ExercisesScreen() {
     ExerciseRepository.getAll().then(setExercises);
   }, []);
 
-  function getMuscleName(muscleId: string) {
-    const muscle = MUSCLES.find((m) => m.id === muscleId);
-    return muscle ? muscle.name : "Unknown Muscle";
-  }
+  const muscleNameById = useMemo(
+    () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.name])),
+    [],
+  );
+
+  const equipmentNameById = useMemo(
+    () => Object.fromEntries(EQUIPMENT.map((e) => [e.id, e.name])),
+    [],
+  );
+
+  const tagNameById = useMemo(
+    () => Object.fromEntries(TAGS.map((t) => [t.id, t.name])),
+    [],
+  );
 
   return (
     <Screen>
@@ -27,16 +42,24 @@ export default function ExercisesScreen() {
       </View>
       <Text style={styles.headerTitle}>Exercise Library</Text>
 
-      <View style={{ flex: 1, padding: 16 }}>
-        <FlatList
-          data={exercises}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Text style={{ paddingVertical: 8 }}>
-              {item.name} - {getMuscleName(item.primaryMuscleId)}
-            </Text>
-          )}
-        />
+      <View style={localStyles.content}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View>
+            <ExerciseTableHeader />
+            <FlatList
+              data={exercises}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <ExerciseTableRow
+                  exercise={item}
+                  muscleNameById={muscleNameById}
+                  equipmentNameById={equipmentNameById}
+                  tagNameById={tagNameById}
+                />
+              )}
+            />
+          </View>
+        </ScrollView>
 
         <Pressable>
           <Text>+ Add exercise</Text>
