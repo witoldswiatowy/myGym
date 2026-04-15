@@ -95,6 +95,15 @@ export default function ExercisesScreen() {
         >
           <Text style={localStyles.addButtonText}>+ Add exercise</Text>
         </Pressable>
+        <Pressable
+          onPress={async () => {
+            await ExerciseRepository.resetToSeed();
+            const fresh = await ExerciseRepository.getAll();
+            setExercises(fresh);
+          }}
+        >
+          <Text>Reset do seed</Text>
+        </Pressable>
       </View>
 
       <AddExerciseModal
