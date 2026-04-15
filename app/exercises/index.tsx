@@ -1,5 +1,8 @@
 import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
+import AddExerciseModal, {
+  ExerciseFormValues,
+} from "@/src/components/exercises/add-exercise-modal";
 import ExerciseTableHeader from "@/src/components/exercises/exercise-table-header";
 import ExerciseTableRow from "@/src/components/exercises/exercise-table-row";
 import { localStyles } from "@/src/components/exercises/exercises.style";
@@ -15,6 +18,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function ExercisesScreen() {
   const insets = useSafeAreaInsets();
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
   useEffect(() => {
     ExerciseRepository.getAll().then(setExercises);
@@ -34,6 +38,27 @@ export default function ExercisesScreen() {
     () => Object.fromEntries(TAGS.map((t) => [t.id, t.name])),
     [],
   );
+
+  async function handleSaveExercise(values: ExerciseFormValues) {
+    const baseId = values.nameEn.trim().toLowerCase().replace(/\s+/g, "_");
+    const uniqueSuffix = Date.now().toString(36);
+
+    const newExercise: Exercise = {
+      id: baseId ? baseId + "_" + uniqueSuffix : "exercise_" + uniqueSuffix,
+      name: values.name.trim(),
+      nameEn: values.nameEn.trim(),
+      primaryMuscleId: values.primaryMuscleId,
+      secondaryMuscleIds: values.secondaryMuscleIds.filter(
+        (id) => id !== values.primaryMuscleId,
+      ),
+      equipmentIds: values.equipmentIds,
+      tagIds: values.tagIds,
+    };
+
+    await ExerciseRepository.add(newExercise);
+    setExercises((prev) => [...prev, newExercise]);
+    setIsAddModalVisible(false);
+  }
 
   return (
     <Screen>
@@ -61,10 +86,22 @@ export default function ExercisesScreen() {
           </View>
         </ScrollView>
 
-        <Pressable>
-          <Text>+ Add exercise</Text>
+        <Pressable
+          style={({ pressed }) => [
+            localStyles.addButton,
+            pressed && localStyles.addButtonPressed,
+          ]}
+          onPress={() => setIsAddModalVisible(true)}
+        >
+          <Text style={localStyles.addButtonText}>+ Add exercise</Text>
         </Pressable>
       </View>
+
+      <AddExerciseModal
+        visible={isAddModalVisible}
+        onClose={() => setIsAddModalVisible(false)}
+        onSave={handleSaveExercise}
+      />
     </Screen>
   );
 }
