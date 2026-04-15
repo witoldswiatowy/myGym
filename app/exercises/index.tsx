@@ -22,10 +22,15 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+type SortKey = "name" | "primaryMuscle" | "equipment" | "tags";
+type SortDir = "asc" | "desc";
+
 export default function ExercisesScreen() {
   const insets = useSafeAreaInsets();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   useEffect(() => {
     ExerciseRepository.getAll().then(setExercises);
@@ -50,6 +55,46 @@ export default function ExercisesScreen() {
     () => Object.fromEntries(TAGS.map((t) => [t.id, t.name])),
     [],
   );
+
+  function handleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortDir((dir) => (dir === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  }
+
+  const sortedExercises = useMemo(() => {
+    return [...exercises].sort((a, b) => {
+      let valA: string;
+      let valB: string;
+
+      if (sortKey === "primaryMuscle") {
+        valA = muscleNameById[a.primaryMuscleId] ?? "";
+        valB = muscleNameById[b.primaryMuscleId] ?? "";
+      } else if (sortKey === "equipment") {
+        valA = equipmentNameById[a.equipmentIds[0]] ?? "";
+        valB = equipmentNameById[b.equipmentIds[0]] ?? "";
+      } else if (sortKey === "tags") {
+        valA = tagNameById[a.tagIds[0]] ?? "";
+        valB = tagNameById[b.tagIds[0]] ?? "";
+      } else {
+        valA = a.name;
+        valB = b.name;
+      }
+
+      const cmp = valA.localeCompare(valB, "pl");
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [
+    exercises,
+    sortKey,
+    sortDir,
+    muscleNameById,
+    equipmentNameById,
+    tagNameById,
+  ]);
 
   async function handleSaveExercise(values: ExerciseFormValues) {
     const baseId = values.nameEn.trim().toLowerCase().replace(/\s+/g, "_");
@@ -86,9 +131,13 @@ export default function ExercisesScreen() {
       <View style={localStyles.content}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View>
-            <ExerciseTableHeader />
+            <ExerciseTableHeader
+              sortKey={sortKey}
+              sortDir={sortDir}
+              onSort={handleSort}
+            />
             <FlatList
-              data={exercises}
+              data={sortedExercises}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <ExerciseTableRow
