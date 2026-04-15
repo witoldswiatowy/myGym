@@ -22,9 +22,24 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 32,
     marginTop: 8,
-    backgroundColor: "red",
+    backgroundColor: "#ffc457",
   },
   headerElement: {
     backgroundColor: "orange",
+  },
+  logoImage: {
+    width: "85%",
+    maxWidth: 340,
+    height: 300,
+  },
+  centerLogoContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logoImageSmall: {
+    width: 40,
+    height: 40,
+    marginTop: 4,
   },
 });

@@ -55,6 +55,22 @@ export const localStyles = StyleSheet.create({
   colTags: {
     width: 160,
   },
+  muscleCellWrap: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: 6,
+  },
+  muscleBadge: {
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  muscleBadgeText: {
+    color: "#1D2939",
+    fontSize: 12,
+    fontWeight: "600",
+  },
   modalBackdrop: {
     flex: 1,
     justifyContent: "flex-end",

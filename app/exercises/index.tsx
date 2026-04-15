@@ -12,7 +12,14 @@ import { TAGS } from "@/src/data/tags.data";
 import { Exercise } from "@/src/models/Exercise";
 import { ExerciseRepository } from "@/src/repositories/exercise.repository";
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ExercisesScreen() {
@@ -26,6 +33,11 @@ export default function ExercisesScreen() {
 
   const muscleNameById = useMemo(
     () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.name])),
+    [],
+  );
+
+  const muscleColorById = useMemo(
+    () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.colorHex])),
     [],
   );
 
@@ -63,7 +75,11 @@ export default function ExercisesScreen() {
   return (
     <Screen>
       <View style={[styles.headerLogoContainer, { paddingTop: insets.top }]}>
-        <Text style={styles.headerLogo}>myGym</Text>
+        <Image
+          source={require("@/assets/images/myGym.png")}
+          style={styles.logoImageSmall}
+          resizeMode="contain"
+        />
       </View>
       <Text style={styles.headerTitle}>Exercise Library</Text>
 
@@ -78,6 +94,7 @@ export default function ExercisesScreen() {
                 <ExerciseTableRow
                   exercise={item}
                   muscleNameById={muscleNameById}
+                  muscleColorById={muscleColorById}
                   equipmentNameById={equipmentNameById}
                   tagNameById={tagNameById}
                 />
