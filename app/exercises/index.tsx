@@ -7,6 +7,7 @@ import ExerciseTableHeader from "@/src/components/exercises/exercise-table-heade
 import ExerciseTableRow from "@/src/components/exercises/exercise-table-row";
 import { localStyles } from "@/src/components/exercises/exercises.style";
 import { EQUIPMENT } from "@/src/data/equipment.data";
+import { MUSCLE_GROUPS } from "@/src/data/muscle-groups.data";
 import { MUSCLES } from "@/src/data/muscles.data";
 import { TAGS } from "@/src/data/tags.data";
 import { Exercise } from "@/src/models/Exercise";
@@ -41,6 +42,16 @@ export default function ExercisesScreen() {
     [],
   );
 
+  const muscleGroupIndexById = useMemo(
+    () => Object.fromEntries(MUSCLE_GROUPS.map((g, i) => [g.id, i])),
+    [],
+  );
+
+  const muscleGroupIdByMuscleId = useMemo(
+    () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.muscleGroupId])),
+    [],
+  );
+
   const muscleColorById = useMemo(
     () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.colorHex])),
     [],
@@ -67,13 +78,28 @@ export default function ExercisesScreen() {
 
   const sortedExercises = useMemo(() => {
     return [...exercises].sort((a, b) => {
+      if (sortKey === "primaryMuscle") {
+        const groupIdA = muscleGroupIdByMuscleId[a.primaryMuscleId] ?? "";
+        const groupIdB = muscleGroupIdByMuscleId[b.primaryMuscleId] ?? "";
+
+        const groupIndexA = muscleGroupIndexById[groupIdA] ?? 999;
+        const groupIndexB = muscleGroupIndexById[groupIdB] ?? 999;
+
+        if (groupIndexA !== groupIndexB) {
+          const groupCmp = groupIndexA - groupIndexB;
+          return sortDir === "asc" ? groupCmp : -groupCmp;
+        }
+
+        const muscleNameA = muscleNameById[a.primaryMuscleId] ?? "";
+        const muscleNameB = muscleNameById[b.primaryMuscleId] ?? "";
+        const muscleCmp = muscleNameA.localeCompare(muscleNameB, "pl");
+        return sortDir === "asc" ? muscleCmp : -muscleCmp;
+      }
+
       let valA: string;
       let valB: string;
 
-      if (sortKey === "primaryMuscle") {
-        valA = muscleNameById[a.primaryMuscleId] ?? "";
-        valB = muscleNameById[b.primaryMuscleId] ?? "";
-      } else if (sortKey === "equipment") {
+      if (sortKey === "equipment") {
         valA = equipmentNameById[a.equipmentIds[0]] ?? "";
         valB = equipmentNameById[b.equipmentIds[0]] ?? "";
       } else if (sortKey === "tags") {
@@ -92,6 +118,8 @@ export default function ExercisesScreen() {
     sortKey,
     sortDir,
     muscleNameById,
+    muscleGroupIdByMuscleId,
+    muscleGroupIndexById,
     equipmentNameById,
     tagNameById,
   ]);

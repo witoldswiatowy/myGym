@@ -241,4 +241,325 @@ export const EXERCISES: Exercise[] = [
     equipmentIds: ["kettlebell"],
     tagIds: ["isolation"],
   },
+
+  // =================================
+  // back-lats
+  // =================================
+  {
+    id: "narrow_pull_up",
+    name: "podciąganie wąsko",
+    nameEn: "Narrow Grip Pull-Up",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["biceps", "forearms"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "db_row",
+    name: "wiosłowanie hantlem w oparciu",
+    nameEn: "One Arm Dumbbell Row",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["upper-back", "biceps"],
+    equipmentIds: ["dumbbell"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "narrow_lat_pulldown",
+    name: "ściąganie wyciągu z góry wąsko",
+    nameEn: "Narrow Lat Pulldown",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["biceps"],
+    equipmentIds: ["cable"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "chin_up",
+    name: "podciąganie podchwytem",
+    nameEn: "Chin-Up",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["biceps", "forearms"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "db_pullover_bench",
+    name: "przenoszenie sztangielki (na ławce leżąc)",
+    nameEn: "Dumbbell Pullover",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["teres-major", "chest"],
+    equipmentIds: ["dumbbell"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "neutral_grip_pull_up",
+    name: "podciąganie w chwycie młotkowym",
+    nameEn: "Neutral Grip Pull-Up",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["biceps", "forearms"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "close_grip_barbell_row_neutral",
+    name: "wiosłowanie wąsko sztangą młotkowo (leżąc)",
+    nameEn: "Close Grip Neutral Barbell Row (Chest Supported)",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["upper-back", "biceps"],
+    equipmentIds: ["barbell"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "skier_cable_pull",
+    name: "narciarz",
+    nameEn: "Skier Cable Pull",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["teres-major"],
+    equipmentIds: ["cable"],
+    tagIds: ["pull", "isolation"],
+  },
+  {
+    id: "cable_pullover",
+    name: "pullover na wyciągu",
+    nameEn: "Cable Pullover",
+    primaryMuscleId: "back-lats",
+    secondaryMuscleIds: ["teres-major"],
+    equipmentIds: ["cable"],
+    tagIds: ["pull", "isolation"],
+  },
+
+  // =================================
+  // upper-back
+  // =================================
+  {
+    id: "wide_seated_cable_row",
+    name: "wiosłowanie wyciągu siedząc szeroko",
+    nameEn: "Wide Seated Cable Row",
+    primaryMuscleId: "upper-back",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["cable"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "barbell_row_overhand",
+    name: "wiosłowanie sztangą w nachwycie",
+    nameEn: "Overhand Barbell Row",
+    primaryMuscleId: "upper-back",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["barbell"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "machine_row",
+    name: "wiosłowanie na maszynie",
+    nameEn: "Machine Row",
+    primaryMuscleId: "upper-back",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["machine"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "wide_lat_pulldown",
+    name: "ściąganie wyciągu z góry szeroko",
+    nameEn: "Wide Lat Pulldown",
+    primaryMuscleId: "upper-back",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["cable"],
+    tagIds: ["pull", "compound"],
+  },
+
+  // =================================
+  // teres-major
+  // =================================
+  {
+    id: "wide_pull_up",
+    name: "podciąganie szeroko",
+    nameEn: "Wide Grip Pull-Up",
+    primaryMuscleId: "teres-major",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "machine_pulldown",
+    name: "ściąganie na maszynie",
+    nameEn: "Machine Pulldown",
+    primaryMuscleId: "teres-major",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["machine"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "pull_up_overhand",
+    name: "podciąganie nachwytem",
+    nameEn: "Overhand Pull-Up",
+    primaryMuscleId: "teres-major",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "pull_up_overhand_slow",
+    name: "podciąganie nachwytem powoli",
+    nameEn: "Slow Overhand Pull-Up",
+    primaryMuscleId: "teres-major",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "pull_up_overhand_high",
+    name: "podciąganie nachwytem jak najwyżej",
+    nameEn: "High Overhand Pull-Up",
+    primaryMuscleId: "teres-major",
+    secondaryMuscleIds: ["back-lats", "biceps"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["pull", "compound"],
+  },
+
+  // =================================
+  // traps & erector-spinae
+  // =================================
+
+  {
+    id: "wide_cable_row_to_sternum",
+    name: "wiosłowanie wyciągu szeroko do mostka",
+    nameEn: "Wide Cable Row to Sternum",
+    primaryMuscleId: "traps",
+    secondaryMuscleIds: ["upper-back", "rear-delts"],
+    equipmentIds: ["cable"],
+    tagIds: ["pull", "compound"],
+  },
+  {
+    id: "plate_overhead_raise",
+    name: "unoszenie krążka nad głową (na prostych rękach)",
+    nameEn: "Plate Overhead Raise",
+    primaryMuscleId: "shoulders-lower-traps",
+    secondaryMuscleIds: ["traps"],
+    equipmentIds: ["plate"],
+    tagIds: ["isolation"],
+  },
+  {
+    id: "shrugs",
+    name: "szrugsy",
+    nameEn: "Shrugs",
+    primaryMuscleId: "upper-traps",
+    secondaryMuscleIds: ["forearms"],
+    equipmentIds: ["dumbbell"],
+    tagIds: ["isolation"],
+  },
+  {
+    id: "roman_chair_back_extension",
+    name: "wyprosty na krzesełku rzymskim",
+    nameEn: "Roman Chair Back Extension",
+    primaryMuscleId: "erector-spinae",
+    secondaryMuscleIds: ["glutes", "hamstrings"],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["compound"],
+  },
+
+  // =================================
+  // glutes & hamstrings
+  // =================================
+  {
+    id: "hip_thrust",
+    name: "hip thrusty",
+    nameEn: "Hip Thrust",
+    primaryMuscleId: "glutes",
+    secondaryMuscleIds: ["hamstrings"],
+    equipmentIds: ["barbell"],
+    tagIds: ["compound"],
+  },
+  {
+    id: "bulgarian_split_squat_lean",
+    name: "przysiad bułgarski w pochyleniu",
+    nameEn: "Bulgarian Split Squat (Lean Forward)",
+    primaryMuscleId: "glutes",
+    secondaryMuscleIds: ["quadriceps", "hamstrings"],
+    equipmentIds: ["dumbbell"],
+    tagIds: ["compound"],
+  },
+
+  // =================================
+  // quadriceps
+  // =================================
+  {
+    id: "squat",
+    name: "przysiady",
+    nameEn: "Squats",
+    primaryMuscleId: "quadriceps",
+    secondaryMuscleIds: ["glutes", "hamstrings"],
+    equipmentIds: ["barbell"],
+    tagIds: ["compound"],
+  },
+  {
+    id: "leg_extension",
+    name: "wyprosty kolan siedząc",
+    nameEn: "Seated Leg Extension",
+    primaryMuscleId: "quadriceps",
+    secondaryMuscleIds: [],
+    equipmentIds: ["machine"],
+    tagIds: ["isolation"],
+  },
+  {
+    id: "leg_press",
+    name: "wypychanie na suwnicy",
+    nameEn: "Leg Press",
+    primaryMuscleId: "quadriceps",
+    secondaryMuscleIds: ["glutes", "hamstrings"],
+    equipmentIds: ["machine"],
+    tagIds: ["compound"],
+  },
+  {
+    id: "bulgarian_split_squat_upright",
+    name: "przysiad bułgarski prosty",
+    nameEn: "Bulgarian Split Squat (Upright)",
+    primaryMuscleId: "quadriceps",
+    secondaryMuscleIds: ["glutes", "hamstrings"],
+    equipmentIds: ["dumbbell"],
+    tagIds: ["compound"],
+  },
+
+  // =================================
+  // deadlift & variations
+  // =================================
+  {
+    id: "deadlift",
+    name: "martwy ciąg",
+    nameEn: "Deadlift",
+    primaryMuscleId: "glutes",
+    secondaryMuscleIds: ["hamstrings", "erector-spinae"],
+    equipmentIds: ["barbell"],
+    tagIds: ["compound"],
+  },
+
+  // =================================
+  // calves
+  // =================================
+  {
+    id: "seated_calf_raise",
+    name: "łydki siedząc",
+    nameEn: "Seated Calf Raise",
+    primaryMuscleId: "calves",
+    secondaryMuscleIds: [],
+    equipmentIds: ["machine"],
+    tagIds: ["isolation"],
+  },
+  {
+    id: "standing_calf_raise",
+    name: "łydki stojąc",
+    nameEn: "Standing Calf Raise",
+    primaryMuscleId: "calves",
+    secondaryMuscleIds: [],
+    equipmentIds: ["bodyweight"],
+    tagIds: ["isolation"],
+  },
+  {
+    id: "lunges",
+    name: "wykroki",
+    nameEn: "Lunges",
+    primaryMuscleId: "quadriceps",
+    secondaryMuscleIds: ["glutes", "hamstrings"],
+    equipmentIds: ["dumbbell"],
+    tagIds: ["compound"],
+  },
 ];

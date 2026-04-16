@@ -3,4 +3,5 @@ export interface Muscle {
   name: string;
   nameEn: string;
   colorHex: string;
+  muscleGroupId: string;
 }
