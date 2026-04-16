@@ -22,7 +22,13 @@ export const MUSCLES: Muscle[] = [
     colorHex: "#00B0F0",
     muscleGroupId: "back",
   },
-  { id: "biceps", name: "biceps", nameEn: "Biceps", colorHex: "#FFD6C9", muscleGroupId: "arms" },
+  {
+    id: "biceps",
+    name: "biceps",
+    nameEn: "Biceps",
+    colorHex: "#FFD6C9",
+    muscleGroupId: "arms",
+  },
   {
     id: "brachialis",
     name: "miesien ramienny",

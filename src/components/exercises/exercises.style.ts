@@ -6,6 +6,21 @@ export const localStyles = StyleSheet.create({
     padding: 16,
     gap: 16,
   },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: "#D0D5DD",
+    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    color: "#101828",
+    fontSize: 14,
+  },
+  noResultsText: {
+    paddingVertical: 16,
+    color: "#667085",
+    fontSize: 14,
+  },
   addButton: {
     alignSelf: "flex-start",
     backgroundColor: "#1570EF",

@@ -6,6 +6,7 @@ export interface Exercise {
   id: string;
   name: string;
   nameEn: string;
+  aliases?: string[];
 
   primaryMuscleId: MuscleId;
   secondaryMuscleIds: MuscleId[];

@@ -10,8 +10,10 @@ import { EQUIPMENT } from "@/src/data/equipment.data";
 import { MUSCLE_GROUPS } from "@/src/data/muscle-groups.data";
 import { MUSCLES } from "@/src/data/muscles.data";
 import { TAGS } from "@/src/data/tags.data";
+import { useDebouncedValue } from "@/src/hooks/use-debounced-value";
 import { Exercise } from "@/src/models/Exercise";
 import { ExerciseRepository } from "@/src/repositories/exercise.repository";
+import { filterExercises } from "@/src/search/filter-exercises";
 import { useEffect, useMemo, useState } from "react";
 import {
   FlatList,
@@ -19,6 +21,7 @@ import {
   Pressable,
   ScrollView,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -32,6 +35,8 @@ export default function ExercisesScreen() {
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebouncedValue(searchQuery, 200);
 
   useEffect(() => {
     ExerciseRepository.getAll().then(setExercises);
@@ -39,6 +44,11 @@ export default function ExercisesScreen() {
 
   const muscleNameById = useMemo(
     () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.name])),
+    [],
+  );
+
+  const muscleNameEnById = useMemo(
+    () => Object.fromEntries(MUSCLES.map((m) => [m.id, m.nameEn])),
     [],
   );
 
@@ -76,8 +86,18 @@ export default function ExercisesScreen() {
     }
   }
 
+  const filteredExercises = useMemo(
+    () =>
+      filterExercises(exercises, {
+        query: debouncedSearchQuery,
+        muscleNameById,
+        muscleNameEnById,
+      }),
+    [exercises, debouncedSearchQuery, muscleNameById, muscleNameEnById],
+  );
+
   const sortedExercises = useMemo(() => {
-    return [...exercises].sort((a, b) => {
+    return [...filteredExercises].sort((a, b) => {
       if (sortKey === "primaryMuscle") {
         const groupIdA = muscleGroupIdByMuscleId[a.primaryMuscleId] ?? "";
         const groupIdB = muscleGroupIdByMuscleId[b.primaryMuscleId] ?? "";
@@ -114,7 +134,7 @@ export default function ExercisesScreen() {
       return sortDir === "asc" ? cmp : -cmp;
     });
   }, [
-    exercises,
+    filteredExercises,
     sortKey,
     sortDir,
     muscleNameById,
@@ -157,6 +177,16 @@ export default function ExercisesScreen() {
       <Text style={styles.headerTitle}>Exercise Library</Text>
 
       <View style={localStyles.content}>
+        <TextInput
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Szukaj: ćwiczenie, mięsień, alias..."
+          placeholderTextColor="#98A2B3"
+          autoCorrect={false}
+          autoCapitalize="none"
+          style={localStyles.searchInput}
+        />
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View>
             <ExerciseTableHeader
@@ -167,6 +197,9 @@ export default function ExercisesScreen() {
             <FlatList
               data={sortedExercises}
               keyExtractor={(item) => item.id}
+              ListEmptyComponent={
+                <Text style={localStyles.noResultsText}>No results found</Text>
+              }
               renderItem={({ item }) => (
                 <ExerciseTableRow
                   exercise={item}
