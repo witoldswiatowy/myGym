@@ -127,7 +127,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_1_2",
     workoutExerciseId: "we_push_1",
-    index: 1,
+    index: 0,
     type: "warmup",
     weight: 50,
     weightUnit: "kg",
@@ -138,7 +138,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_1_3",
     workoutExerciseId: "we_push_1",
-    index: 2,
+    index: 1,
     type: "working",
     weight: 60,
     weightUnit: "kg",
@@ -148,7 +148,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_1_4",
     workoutExerciseId: "we_push_1",
-    index: 3,
+    index: 2,
     type: "working",
     weight: 60,
     weightUnit: "kg",
@@ -158,7 +158,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_1_5",
     workoutExerciseId: "we_push_1",
-    index: 4,
+    index: 3,
     type: "working",
     weight: 60,
     weightUnit: "kg",
@@ -181,7 +181,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_2_2",
     workoutExerciseId: "we_push_2",
-    index: 1,
+    index: 0,
     type: "warmup",
     weight: 8,
     weightUnit: "kg",
@@ -192,7 +192,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_2_3",
     workoutExerciseId: "we_push_2",
-    index: 2,
+    index: 1,
     type: "working",
     weight: 12,
     weightUnit: "kg",
@@ -202,7 +202,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_2_4",
     workoutExerciseId: "we_push_2",
-    index: 3,
+    index: 2,
     type: "working",
     weight: 12,
     weightUnit: "kg",
@@ -212,7 +212,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
   {
     id: "ws_push_2_5",
     workoutExerciseId: "we_push_2",
-    index: 4,
+    index: 3,
     type: "working",
     weight: 12,
     weightUnit: "kg",
