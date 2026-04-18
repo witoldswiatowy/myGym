@@ -1,23 +1,38 @@
 import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
+import { localStyles } from "@/src/components/workout/workout.style";
+import { TrainingDay } from "@/src/models/TrainingDay";
+import { WorkoutSet } from "@/src/models/WorkoutSet";
 import {
-  SAMPLE_TRAINING_DAYS,
-  SAMPLE_WORKOUT_EXERCISES,
-  SAMPLE_WORKOUT_SETS,
-} from "@/src/data/training-days.data";
+  WorkoutExerciseWithName,
+  WorkoutRepository,
+} from "@/src/repositories/workout.repository";
 import { spacing } from "@/src/theme/spacing";
 import { router, useLocalSearchParams } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function WorkoutScreen() {
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const [day, setDay] = useState<TrainingDay | null>(null);
+  const [exercises, setExercises] = useState<WorkoutExerciseWithName[]>([]);
+  const [setsByExerciseId, setSetsByExerciseId] = useState<
+    Record<string, WorkoutSet[]>
+  >({});
 
-  const day = SAMPLE_TRAINING_DAYS.find((d) => d.id === id);
-  const exercises = SAMPLE_WORKOUT_EXERCISES.filter(
-    (e) => e.trainingDayId === id,
-  ).sort((a, b) => a.order - b.order);
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    WorkoutRepository.getWorkoutDetailsWithExerciseInfo(id).then((details) => {
+      setDay(details.day);
+      setExercises(details.exercises);
+      setSetsByExerciseId(details.setsByExerciseId);
+    });
+  }, [id]);
 
   if (!day) {
     return (
@@ -53,14 +68,12 @@ export default function WorkoutScreen() {
         contentContainerStyle={{ gap: spacing.sm }}
       >
         {exercises.map((ex, idx) => {
-          const sets = SAMPLE_WORKOUT_SETS.filter(
-            (s) => s.workoutExerciseId === ex.id,
-          ).sort((a, b) => a.index - b.index);
+          const sets = setsByExerciseId[ex.id] ?? [];
 
           return (
             <View key={ex.id} style={localStyles.exerciseCard}>
               <Text style={localStyles.exerciseName}>
-                {idx + 1}. {ex.exerciseId}
+                {idx + 1}. {ex.name}
               </Text>
               {sets.map((set) => (
                 <View key={set.id} style={localStyles.setRow}>
@@ -68,7 +81,8 @@ export default function WorkoutScreen() {
                     {set.type === "warmup" ? "0" : set.index}
                   </Text>
                   <Text style={localStyles.setText}>
-                    {set.weight} {set.weightUnit} × {set.reps} powt.
+                    {set.weight} {set.weightUnit} × {set.reps} powt.{" "}
+                    {set.done ? "✓" : ""}
                   </Text>
                 </View>
               ))}
@@ -79,50 +93,3 @@ export default function WorkoutScreen() {
     </Screen>
   );
 }
-
-const localStyles = StyleSheet.create({
-  backButton: {
-    marginTop: spacing.sm,
-    alignSelf: "flex-start",
-  },
-  backButtonText: {
-    color: "#333",
-    fontSize: 14,
-  },
-  note: {
-    textAlign: "center",
-    color: "#555",
-    marginTop: spacing.xs,
-  },
-  meta: {
-    textAlign: "center",
-    color: "#888",
-    fontSize: 12,
-    marginTop: 4,
-  },
-  exerciseCard: {
-    backgroundColor: "#fff8ee",
-    borderRadius: 8,
-    padding: spacing.sm,
-    borderLeftWidth: 4,
-    borderLeftColor: "orange",
-  },
-  exerciseName: {
-    fontWeight: "bold",
-    marginBottom: 6,
-  },
-  setRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.xs,
-    marginTop: 2,
-  },
-  setType: {
-    width: 20,
-    fontWeight: "bold",
-    color: "#888",
-  },
-  setText: {
-    fontSize: 14,
-  },
-});
