@@ -13,13 +13,60 @@ import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+type SetForm = {
+  id: string;
+  workoutExerciseId: string;
+  index: number;
+  type: "warmup" | "working" | "drop" | "failure";
+  weight: string; // jako string dla TextInput
+  weightUnit: "kg" | "lb";
+  reps: string; // jako string dla TextInput
+  done: boolean;
+};
+
+function mapSet(set: WorkoutSet): SetForm {
+  return {
+    id: set.id,
+    workoutExerciseId: set.workoutExerciseId,
+    index: set.index,
+    type: set.type,
+    // weight: set.weight ? set.weight.toString() : "",
+    weight: set.weight != null ? set.weight.toString() : "",
+    weightUnit: set.weightUnit ?? "kg",
+    // reps: set.reps ? set.reps.toString() : "",
+    reps: set.reps != null ? set.reps.toString() : "",
+    done: set.done,
+  };
+}
+
+function mapSetOrCreate(
+  set: WorkoutSet | undefined,
+  workoutExerciseId: string,
+  index: number,
+): SetForm {
+  if (set) {
+    return mapSet(set);
+  } else {
+    return {
+      id: `new-${workoutExerciseId}-${index}`,
+      workoutExerciseId,
+      index,
+      type: "working",
+      weightUnit: "kg",
+      weight: "",
+      reps: "",
+      done: false,
+    };
+  }
+}
+
 export default function WorkoutScreen() {
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [day, setDay] = useState<TrainingDay | null>(null);
   const [exercises, setExercises] = useState<WorkoutExerciseWithName[]>([]);
   const [setsByExerciseId, setSetsByExerciseId] = useState<
-    Record<string, WorkoutSet[]>
+    Record<string, SetForm[]>
   >({});
 
   useEffect(() => {
