@@ -122,7 +122,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
     weight: 40,
     weightUnit: "kg",
     reps: 8,
-    done: true,
+    done: false,
   },
   {
     id: "ws_push_1_2",
@@ -132,7 +132,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
     weight: 50,
     weightUnit: "kg",
     reps: 6,
-    done: true,
+    done: false,
   },
   // 3 working
   {
@@ -143,7 +143,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
     weight: 60,
     weightUnit: "kg",
     reps: 8,
-    done: true,
+    done: false,
   },
   {
     id: "ws_push_1_4",
@@ -153,7 +153,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
     weight: 60,
     weightUnit: "kg",
     reps: 8,
-    done: true,
+    done: false,
   },
   {
     id: "ws_push_1_5",
@@ -163,7 +163,7 @@ export const SAMPLE_WORKOUT_SETS: WorkoutSet[] = [
     weight: 60,
     weightUnit: "kg",
     reps: 7,
-    done: true,
+    done: false,
   },
 
   // ── db_lateral_raise_lean (we_push_2) ──────────────────────

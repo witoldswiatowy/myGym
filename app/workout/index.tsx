@@ -10,8 +10,18 @@ import {
 import { spacing } from "@/src/theme/spacing";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Picker } from "@react-native-picker/picker";
+import { Checkbox } from "expo-checkbox";
 
 type SetForm = {
   id: string;
@@ -22,6 +32,20 @@ type SetForm = {
   weightUnit: "kg" | "lb";
   reps: string; // jako string dla TextInput
   done: boolean;
+};
+
+const SET_TYPE_OPTIONS: SetForm["type"][] = [
+  "warmup",
+  "working",
+  "drop",
+  "failure",
+];
+
+const SET_TYPE_LABEL: Record<SetForm["type"], string> = {
+  warmup: "WarmUp",
+  working: "Normal",
+  drop: "Drop",
+  failure: "Upadek",
 };
 
 function mapSet(set: WorkoutSet): SetForm {
@@ -68,6 +92,37 @@ export default function WorkoutScreen() {
   const [setsByExerciseId, setSetsByExerciseId] = useState<
     Record<string, SetForm[]>
   >({});
+  const [typeSelectTarget, setTypeSelectTarget] = useState<{
+    exerciseId: string;
+    setId: string;
+  } | null>(null);
+
+  function updateSetField(
+    exerciseId: string,
+    setId: string,
+    patch: Partial<SetForm>,
+  ) {
+    setSetsByExerciseId((prev) => {
+      const currentSets = prev[exerciseId] ?? [];
+      return {
+        ...prev,
+        [exerciseId]: currentSets.map((set) =>
+          set.id === setId ? { ...set, ...patch } : set,
+        ),
+      };
+    });
+  }
+
+  function selectSetType(nextType: SetForm["type"]) {
+    if (!typeSelectTarget) {
+      return;
+    }
+
+    updateSetField(typeSelectTarget.exerciseId, typeSelectTarget.setId, {
+      type: nextType,
+    });
+    setTypeSelectTarget(null);
+  }
 
   useEffect(() => {
     if (!id) {
@@ -77,7 +132,20 @@ export default function WorkoutScreen() {
     WorkoutRepository.getWorkoutDetailsWithExerciseInfo(id).then((details) => {
       setDay(details.day);
       setExercises(details.exercises);
-      setSetsByExerciseId(details.setsByExerciseId);
+      setSetsByExerciseId(
+        Object.fromEntries(
+          details.exercises.map((exercise) => {
+            const rawSets = details.setsByExerciseId[exercise.id] ?? [];
+            const mappedSets = rawSets.length
+              ? rawSets.map(mapSet)
+              : [0, 1, 2].map((index) =>
+                  mapSetOrCreate(undefined, exercise.id, index),
+                );
+
+            return [exercise.id, mappedSets];
+          }),
+        ),
+      );
     });
   }, [id]);
 
@@ -124,19 +192,119 @@ export default function WorkoutScreen() {
               </Text>
               {sets.map((set) => (
                 <View key={set.id} style={localStyles.setRow}>
-                  <Text style={localStyles.setType}>
-                    {set.type === "warmup" ? "0" : set.index}
-                  </Text>
-                  <Text style={localStyles.setText}>
-                    {set.weight} {set.weightUnit} × {set.reps} powt.{" "}
-                    {set.done ? "✓" : ""}
-                  </Text>
+                  <Pressable
+                    onPress={() =>
+                      setTypeSelectTarget({ exerciseId: ex.id, setId: set.id })
+                    }
+                    style={({ pressed }) => [
+                      localStyles.typeSelectButton,
+                      pressed && localStyles.typeSelectButtonPressed,
+                    ]}
+                  >
+                    <Text style={localStyles.typeSelectLabel}>
+                      {SET_TYPE_LABEL[set.type]}
+                    </Text>
+                  </Pressable>
+
+                  <TextInput
+                    value={set.weight}
+                    onChangeText={(text) =>
+                      updateSetField(ex.id, set.id, {
+                        weight: text.replace(/[^0-9.,]/g, ""),
+                      })
+                    }
+                    keyboardType="decimal-pad"
+                    placeholder="0"
+                    style={[
+                      localStyles.setText,
+                      {
+                        minWidth: 56,
+                        borderWidth: 1,
+                        borderColor: "#d9d9d9",
+                        borderRadius: 6,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                      },
+                    ]}
+                  />
+
+                  <Picker
+                    mode="dropdown"
+                    selectedValue={set.weightUnit}
+                    onValueChange={(value) =>
+                      updateSetField(ex.id, set.id, {
+                        weightUnit: value as SetForm["weightUnit"],
+                      })
+                    }
+                    style={{ height: 48, width: 84 }}
+                  >
+                    <Picker.Item label="kg" value="kg" />
+                    <Picker.Item label="lb" value="lb" />
+                  </Picker>
+
+                  <Text style={localStyles.setText}>×</Text>
+
+                  <TextInput
+                    value={set.reps}
+                    onChangeText={(text) =>
+                      updateSetField(ex.id, set.id, {
+                        reps: text.replace(/[^0-9]/g, ""),
+                      })
+                    }
+                    keyboardType="number-pad"
+                    placeholder="0"
+                    style={[
+                      localStyles.setText,
+                      {
+                        minWidth: 46,
+                        borderWidth: 1,
+                        borderColor: "#d9d9d9",
+                        borderRadius: 6,
+                        paddingHorizontal: 8,
+                        paddingVertical: 4,
+                      },
+                    ]}
+                  />
+
+                  <Text style={localStyles.setText}>powt.</Text>
+                  <Checkbox
+                    value={set.done}
+                    onValueChange={(value) =>
+                      updateSetField(ex.id, set.id, { done: value })
+                    }
+                  />
                 </View>
               ))}
             </View>
           );
         })}
       </ScrollView>
+
+      <Modal
+        transparent
+        animationType="fade"
+        visible={!!typeSelectTarget}
+        onRequestClose={() => setTypeSelectTarget(null)}
+      >
+        <Pressable
+          style={localStyles.typeModalBackdrop}
+          onPress={() => setTypeSelectTarget(null)}
+        >
+          <View style={localStyles.typeModalCard}>
+            {SET_TYPE_OPTIONS.map((typeOption) => (
+              <Pressable
+                key={typeOption}
+                onPress={() => selectSetType(typeOption)}
+                style={localStyles.typeOptionRow}
+              >
+                <Text style={localStyles.typeOptionText}>
+                  {SET_TYPE_LABEL[typeOption]} ({typeOption})
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </Pressable>
+      </Modal>
     </Screen>
   );
 }
