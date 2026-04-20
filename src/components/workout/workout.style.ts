@@ -40,7 +40,7 @@ export const localStyles = StyleSheet.create({
   },
   typeSelectButton: {
     width: 58,
-    height: 36,
+    height: 30,
     borderWidth: 1,
     borderColor: "#d9d9d9",
     borderRadius: 6,

@@ -20,7 +20,6 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Picker } from "@react-native-picker/picker";
 import { Checkbox } from "expo-checkbox";
 
 type SetForm = {
@@ -47,6 +46,7 @@ const SET_TYPE_LABEL: Record<SetForm["type"], string> = {
   drop: "Drop",
   failure: "Upadek",
 };
+const SET_WEIGHT_UNIT_OPTIONS: SetForm["weightUnit"][] = ["kg", "lb"];
 
 function mapSet(set: WorkoutSet): SetForm {
   return {
@@ -96,6 +96,10 @@ export default function WorkoutScreen() {
     exerciseId: string;
     setId: string;
   } | null>(null);
+  const [weightUnitSelectTarget, setWeightUnitSelectTarget] = useState<{
+    exerciseId: string;
+    setId: string;
+  } | null>(null);
 
   function updateSetField(
     exerciseId: string,
@@ -122,6 +126,21 @@ export default function WorkoutScreen() {
       type: nextType,
     });
     setTypeSelectTarget(null);
+  }
+
+  function selectWeightUnit(nextUnit: SetForm["weightUnit"]) {
+    if (!weightUnitSelectTarget) {
+      return;
+    }
+
+    updateSetField(
+      weightUnitSelectTarget.exerciseId,
+      weightUnitSelectTarget.setId,
+      {
+        weightUnit: nextUnit,
+      },
+    );
+    setWeightUnitSelectTarget(null);
   }
 
   useEffect(() => {
@@ -228,19 +247,22 @@ export default function WorkoutScreen() {
                     ]}
                   />
 
-                  <Picker
-                    mode="dropdown"
-                    selectedValue={set.weightUnit}
-                    onValueChange={(value) =>
-                      updateSetField(ex.id, set.id, {
-                        weightUnit: value as SetForm["weightUnit"],
+                  <Pressable
+                    onPress={() =>
+                      setWeightUnitSelectTarget({
+                        exerciseId: ex.id,
+                        setId: set.id,
                       })
                     }
-                    style={{ height: 48, width: 84 }}
+                    style={({ pressed }) => [
+                      localStyles.typeSelectButton,
+                      pressed && localStyles.typeSelectButtonPressed,
+                    ]}
                   >
-                    <Picker.Item label="kg" value="kg" />
-                    <Picker.Item label="lb" value="lb" />
-                  </Picker>
+                    <Text style={localStyles.typeSelectLabel}>
+                      {[set.weightUnit]}
+                    </Text>
+                  </Pressable>
 
                   <Text style={localStyles.setText}>×</Text>
 
@@ -300,6 +322,29 @@ export default function WorkoutScreen() {
                 <Text style={localStyles.typeOptionText}>
                   {SET_TYPE_LABEL[typeOption]} ({typeOption})
                 </Text>
+              </Pressable>
+            ))}
+          </View>
+        </Pressable>
+      </Modal>
+      <Modal
+        transparent
+        animationType="fade"
+        visible={!!weightUnitSelectTarget}
+        onRequestClose={() => setWeightUnitSelectTarget(null)}
+      >
+        <Pressable
+          style={localStyles.typeModalBackdrop}
+          onPress={() => setWeightUnitSelectTarget(null)}
+        >
+          <View style={localStyles.typeModalCard}>
+            {SET_WEIGHT_UNIT_OPTIONS.map((unitOption) => (
+              <Pressable
+                key={unitOption}
+                onPress={() => selectWeightUnit(unitOption)}
+                style={localStyles.typeOptionRow}
+              >
+                <Text style={localStyles.typeOptionText}>{unitOption}</Text>
               </Pressable>
             ))}
           </View>
