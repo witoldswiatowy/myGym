@@ -304,7 +304,7 @@ export default function WorkoutScreen() {
 
       <Modal
         transparent
-        animationType="fade"
+        animationType="none" //
         visible={!!typeSelectTarget}
         onRequestClose={() => setTypeSelectTarget(null)}
       >
@@ -329,7 +329,11 @@ export default function WorkoutScreen() {
       </Modal>
       <Modal
         transparent
-        animationType="fade"
+        animationType="none"
+        //bylo animationType="fade"
+        //animacja może być zbędna dla tego typu wyboru, bo i tak jest szybki, a bez animacji jest bardziej responsywny
+        //podomno nawet 200 ms może być zauważalne, a tu chcemy, żeby było jak najszybciej
+        //po za tym przy szybkkim wyborze opcji, było zauważalne opóźnienie w zamykaniu modala, co mogło być frustrujące, więc zrezygnowałem z animacji
         visible={!!weightUnitSelectTarget}
         onRequestClose={() => setWeightUnitSelectTarget(null)}
       >
