@@ -38,9 +38,14 @@ export const localStyles = StyleSheet.create({
     gap: spacing.xs,
     marginTop: 2,
   },
+  typeSelectButtonType: {
+    width: 60,
+  },
+  typeSelectButtonUnit: {
+    width: 30,
+  },
   typeSelectButton: {
-    width: 58,
-    height: 30,
+    height: 25,
     borderWidth: 1,
     borderColor: "#d9d9d9",
     borderRadius: 6,
@@ -55,6 +60,9 @@ export const localStyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "600",
     color: "#333",
+  },
+  doneCheckbox: {
+    marginLeft: "auto",
   },
   typeModalBackdrop: {
     flex: 1,

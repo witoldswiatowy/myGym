@@ -217,6 +217,7 @@ export default function WorkoutScreen() {
                     }
                     style={({ pressed }) => [
                       localStyles.typeSelectButton,
+                      localStyles.typeSelectButtonType,
                       pressed && localStyles.typeSelectButtonPressed,
                     ]}
                   >
@@ -237,7 +238,7 @@ export default function WorkoutScreen() {
                     style={[
                       localStyles.setText,
                       {
-                        minWidth: 56,
+                        minWidth: 30,
                         borderWidth: 1,
                         borderColor: "#d9d9d9",
                         borderRadius: 6,
@@ -256,6 +257,7 @@ export default function WorkoutScreen() {
                     }
                     style={({ pressed }) => [
                       localStyles.typeSelectButton,
+                      localStyles.typeSelectButtonUnit,
                       pressed && localStyles.typeSelectButtonPressed,
                     ]}
                   >
@@ -264,7 +266,7 @@ export default function WorkoutScreen() {
                     </Text>
                   </Pressable>
 
-                  <Text style={localStyles.setText}>×</Text>
+                  <Text style={localStyles.setText}> × </Text>
 
                   <TextInput
                     value={set.reps}
@@ -278,7 +280,7 @@ export default function WorkoutScreen() {
                     style={[
                       localStyles.setText,
                       {
-                        minWidth: 46,
+                        minWidth: 30,
                         borderWidth: 1,
                         borderColor: "#d9d9d9",
                         borderRadius: 6,
@@ -290,6 +292,7 @@ export default function WorkoutScreen() {
 
                   <Text style={localStyles.setText}>powt.</Text>
                   <Checkbox
+                    style={localStyles.doneCheckbox}
                     value={set.done}
                     onValueChange={(value) =>
                       updateSetField(ex.id, set.id, { done: value })
