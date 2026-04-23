@@ -1,6 +1,7 @@
 import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
 import WorkoutSetRow from "@/src/components/workout/workout-set-row";
+import WorkoutSetRowModal from "@/src/components/workout/workout-set-row-modal";
 import { localStyles } from "@/src/components/workout/workout.style";
 import { TrainingDay } from "@/src/models/TrainingDay";
 import { WorkoutSet } from "@/src/models/WorkoutSet";
@@ -25,19 +26,13 @@ type SetForm = {
   done: boolean;
 };
 
-const SET_TYPE_OPTIONS: SetForm["type"][] = [
-  "warmup",
-  "working",
-  "drop",
-  "failure",
-];
-
 const SET_TYPE_LABEL: Record<SetForm["type"], string> = {
   warmup: "WarmUp",
   working: "Normal",
   drop: "Drop",
   failure: "Upadek",
 };
+
 const SET_WEIGHT_UNIT_OPTIONS: SetForm["weightUnit"][] = ["kg", "lb"];
 
 function mapSet(set: WorkoutSet): SetForm {
@@ -231,31 +226,12 @@ export default function WorkoutScreen() {
         })}
       </ScrollView>
 
-      <Modal
-        transparent
-        animationType="none" //
-        visible={!!typeSelectTarget}
-        onRequestClose={() => setTypeSelectTarget(null)}
-      >
-        <Pressable
-          style={localStyles.typeModalBackdrop}
-          onPress={() => setTypeSelectTarget(null)}
-        >
-          <View style={localStyles.typeModalCard}>
-            {SET_TYPE_OPTIONS.map((typeOption) => (
-              <Pressable
-                key={typeOption}
-                onPress={() => selectSetType(typeOption)}
-                style={localStyles.typeOptionRow}
-              >
-                <Text style={localStyles.typeOptionText}>
-                  {SET_TYPE_LABEL[typeOption]} ({typeOption})
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-        </Pressable>
-      </Modal>
+      <WorkoutSetRowModal
+        typeSelectTarget={typeSelectTarget}
+        setTypeSelectTarget={setTypeSelectTarget}
+        selectSetType={selectSetType}
+      />
+
       <Modal
         transparent
         animationType="none"
