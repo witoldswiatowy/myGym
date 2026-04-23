@@ -1,7 +1,8 @@
 import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
 import WorkoutSetRow from "@/src/components/workout/workout-set-row";
-import WorkoutSetRowModal from "@/src/components/workout/workout-set-row-modal";
+import WorkoutSetTypeModal from "@/src/components/workout/workout-set-type-modal";
+import WorkoutWeightUnitModal from "@/src/components/workout/workout-weight-unit-modal";
 import { localStyles } from "@/src/components/workout/workout.style";
 import { TrainingDay } from "@/src/models/TrainingDay";
 import { WorkoutSet } from "@/src/models/WorkoutSet";
@@ -12,7 +13,7 @@ import {
 import { spacing } from "@/src/theme/spacing";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SetForm = {
@@ -112,7 +113,9 @@ export default function WorkoutScreen() {
     updateSetField(typeSelectTarget.exerciseId, typeSelectTarget.setId, {
       type: nextType,
     });
-    setTypeSelectTarget(null);
+    setTypeSelectTarget(null); // zamyka modal po wyborze opcji,
+    // bo visible zależy od typeSelectTarget,
+    // więc ustawienie go na null ukryje modal
   }
 
   function selectWeightUnit(nextUnit: SetForm["weightUnit"]) {
@@ -203,7 +206,8 @@ export default function WorkoutScreen() {
                   typeLabel={SET_TYPE_LABEL[set.type]}
                   onOpenTypeSelect={() =>
                     setTypeSelectTarget({ exerciseId: ex.id, setId: set.id })
-                  }
+                  } //funkcja przekazana do WorkoutSetRow, która ustawi typeSelectTarget
+                  // na obiekt z exerciseId i setId, co spowoduje otwarcie modala typu
                   onOpenWeightUnitSelect={() =>
                     setWeightUnitSelectTarget({
                       exerciseId: ex.id,
@@ -226,39 +230,17 @@ export default function WorkoutScreen() {
         })}
       </ScrollView>
 
-      <WorkoutSetRowModal
+      <WorkoutSetTypeModal
         typeSelectTarget={typeSelectTarget}
         setTypeSelectTarget={setTypeSelectTarget}
         selectSetType={selectSetType}
       />
 
-      <Modal
-        transparent
-        animationType="none"
-        //bylo animationType="fade"
-        //animacja może być zbędna dla tego typu wyboru, bo i tak jest szybki, a bez animacji jest bardziej responsywny
-        //podomno nawet 200 ms może być zauważalne, a tu chcemy, żeby było jak najszybciej
-        //po za tym przy szybkkim wyborze opcji, było zauważalne opóźnienie w zamykaniu modala, co mogło być frustrujące, więc zrezygnowałem z animacji
-        visible={!!weightUnitSelectTarget}
-        onRequestClose={() => setWeightUnitSelectTarget(null)}
-      >
-        <Pressable
-          style={localStyles.typeModalBackdrop}
-          onPress={() => setWeightUnitSelectTarget(null)}
-        >
-          <View style={localStyles.typeModalCard}>
-            {SET_WEIGHT_UNIT_OPTIONS.map((unitOption) => (
-              <Pressable
-                key={unitOption}
-                onPress={() => selectWeightUnit(unitOption)}
-                style={localStyles.typeOptionRow}
-              >
-                <Text style={localStyles.typeOptionText}>{unitOption}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </Pressable>
-      </Modal>
+      <WorkoutWeightUnitModal
+        weightUnitSelectTarget={weightUnitSelectTarget}
+        setWeightUnitSelectTarget={setWeightUnitSelectTarget}
+        selectWeightUnit={selectWeightUnit}
+      />
     </Screen>
   );
 }

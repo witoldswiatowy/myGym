@@ -36,7 +36,9 @@ export default function WorkoutSetRow({
   return (
     <View style={localStyles.setRow}>
       <Pressable
-        onPress={onOpenTypeSelect}
+        onPress={onOpenTypeSelect} //kliknięcie przycisku typu wywoła
+        // funkcję onOpenTypeSelect przekazaną z index.tsx,
+        // która ustawi typeSelectTarget i otworzy modal
         style={({ pressed }) => [
           localStyles.typeSelectButton,
           localStyles.typeSelectButtonType,

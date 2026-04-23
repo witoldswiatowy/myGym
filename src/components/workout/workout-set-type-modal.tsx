@@ -12,7 +12,7 @@ const SET_TYPE_LABEL: Record<SetType, string> = {
   failure: "Upadek",
 };
 
-type WorkoutSetRowModalProps = {
+type WorkoutSetTypeModalProps = {
   typeSelectTarget: { exerciseId: string; setId: string } | null;
   setTypeSelectTarget: React.Dispatch<
     React.SetStateAction<{ exerciseId: string; setId: string } | null>
@@ -20,16 +20,26 @@ type WorkoutSetRowModalProps = {
   selectSetType: (nextType: SetType) => void;
 };
 
-export default function WorkoutSetRowModal({
+export default function WorkoutSetTypeModal({
   typeSelectTarget,
   setTypeSelectTarget,
   selectSetType,
-}: WorkoutSetRowModalProps) {
+}: WorkoutSetTypeModalProps) {
   return (
     <Modal
       transparent
       animationType="none" //
       visible={!!typeSelectTarget}
+      // typeSelectTarget pochodzi z index.tsx jako prop
+      // Kiedy użytkownik kliknie przycisk typu w WorkoutSetRow,
+      // setTypeSelectTarget({ exerciseId, setId }) zmienia stan w index.tsx
+      // React re-renderuje ten komponent z nową wartością prop
+      // !!typeSelectTarget konwertuje: null → false, obiekt → true
+      // Gdy true, modal się wyświetla; gdy false, się chowa
+      //-------------------------------
+      // Modal otwiera się gdy typeSelectTarget != null
+      // (usetkownk kliknął przycisk w WorkoutSetRow → setTypeSelectTarget ustawił wartość)
+      // React re-renderuje → Modal dostaje nowy prop → widoczność zmienia się
       onRequestClose={() => setTypeSelectTarget(null)}
     >
       <Pressable
