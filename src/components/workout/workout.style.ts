@@ -159,4 +159,13 @@ export const localStyles = StyleSheet.create({
   setText: {
     fontSize: 14,
   },
+  inlineNumberInput: {
+    minWidth: 30,
+    borderWidth: 1,
+    borderColor: "#d9d9d9",
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    fontSize: 14,
+  },
 });

@@ -1,5 +1,6 @@
 import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
+import WorkoutSetRow from "@/src/components/workout/workout-set-row";
 import { localStyles } from "@/src/components/workout/workout.style";
 import { TrainingDay } from "@/src/models/TrainingDay";
 import { WorkoutSet } from "@/src/models/WorkoutSet";
@@ -10,17 +11,8 @@ import {
 import { spacing } from "@/src/theme/spacing";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { Checkbox } from "expo-checkbox";
 
 type SetForm = {
   id: string;
@@ -210,95 +202,29 @@ export default function WorkoutScreen() {
                 {idx + 1}. {ex.name}
               </Text>
               {sets.map((set) => (
-                <View key={set.id} style={localStyles.setRow}>
-                  <Pressable
-                    onPress={() =>
-                      setTypeSelectTarget({ exerciseId: ex.id, setId: set.id })
-                    }
-                    style={({ pressed }) => [
-                      localStyles.typeSelectButton,
-                      localStyles.typeSelectButtonType,
-                      pressed && localStyles.typeSelectButtonPressed,
-                    ]}
-                  >
-                    <Text style={localStyles.typeSelectLabel}>
-                      {SET_TYPE_LABEL[set.type]}
-                    </Text>
-                  </Pressable>
-
-                  <TextInput
-                    value={set.weight}
-                    onChangeText={(text) =>
-                      updateSetField(ex.id, set.id, {
-                        weight: text.replace(/[^0-9.,]/g, ""),
-                      })
-                    }
-                    keyboardType="decimal-pad"
-                    placeholder="0"
-                    style={[
-                      localStyles.setText,
-                      {
-                        minWidth: 30,
-                        borderWidth: 1,
-                        borderColor: "#d9d9d9",
-                        borderRadius: 6,
-                        paddingHorizontal: 8,
-                        paddingVertical: 4,
-                      },
-                    ]}
-                  />
-
-                  <Pressable
-                    onPress={() =>
-                      setWeightUnitSelectTarget({
-                        exerciseId: ex.id,
-                        setId: set.id,
-                      })
-                    }
-                    style={({ pressed }) => [
-                      localStyles.typeSelectButton,
-                      localStyles.typeSelectButtonUnit,
-                      pressed && localStyles.typeSelectButtonPressed,
-                    ]}
-                  >
-                    <Text style={localStyles.typeSelectLabel}>
-                      {[set.weightUnit]}
-                    </Text>
-                  </Pressable>
-
-                  <Text style={localStyles.setText}> × </Text>
-
-                  <TextInput
-                    value={set.reps}
-                    onChangeText={(text) =>
-                      updateSetField(ex.id, set.id, {
-                        reps: text.replace(/[^0-9]/g, ""),
-                      })
-                    }
-                    keyboardType="number-pad"
-                    placeholder="0"
-                    style={[
-                      localStyles.setText,
-                      {
-                        minWidth: 30,
-                        borderWidth: 1,
-                        borderColor: "#d9d9d9",
-                        borderRadius: 6,
-                        paddingHorizontal: 8,
-                        paddingVertical: 4,
-                      },
-                    ]}
-                  />
-
-                  <Text style={localStyles.setText}>powt.</Text>
-                  <Checkbox
-                    style={localStyles.doneCheckbox}
-                    value={set.done}
-                    onValueChange={(value) =>
-                      updateSetField(ex.id, set.id, { done: value })
-                    }
-                  />
-                </View>
+                <WorkoutSetRow
+                  key={set.id}
+                  set={set}
+                  typeLabel={SET_TYPE_LABEL[set.type]}
+                  onOpenTypeSelect={() =>
+                    setTypeSelectTarget({ exerciseId: ex.id, setId: set.id })
+                  }
+                  onOpenWeightUnitSelect={() =>
+                    setWeightUnitSelectTarget({
+                      exerciseId: ex.id,
+                      setId: set.id,
+                    })
+                  }
+                  onChangeWeight={(weight) =>
+                    updateSetField(ex.id, set.id, { weight })
+                  }
+                  onChangeReps={(reps) =>
+                    updateSetField(ex.id, set.id, { reps })
+                  }
+                  onChangeDone={(done) =>
+                    updateSetField(ex.id, set.id, { done })
+                  }
+                />
               ))}
             </View>
           );
