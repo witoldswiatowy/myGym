@@ -1,4 +1,3 @@
-import { styles } from "@/app/app.style";
 import { Screen } from "@/src/components/common/Screen";
 import AddExerciseModal, {
   ExerciseFormValues,
@@ -17,20 +16,17 @@ import { filterExercises } from "@/src/search/filter-exercises";
 import { useEffect, useMemo, useState } from "react";
 import {
   FlatList,
-  Image,
   Pressable,
   ScrollView,
   Text,
   TextInput,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SortKey = "name" | "primaryMuscle" | "equipment" | "tags";
 type SortDir = "asc" | "desc";
 
 export default function ExercisesScreen() {
-  const insets = useSafeAreaInsets();
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>("name");
@@ -166,16 +162,7 @@ export default function ExercisesScreen() {
   }
 
   return (
-    <Screen>
-      <View style={[styles.headerLogoContainer, { paddingTop: insets.top }]}>
-        <Image
-          source={require("@/assets/images/myGym.png")}
-          style={styles.logoImageSmall}
-          resizeMode="contain"
-        />
-      </View>
-      <Text style={styles.headerTitle}>Exercise Library</Text>
-
+    <Screen title="Exercise Library">
       <View style={localStyles.content}>
         <TextInput
           value={searchQuery}

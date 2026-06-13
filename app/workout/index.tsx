@@ -8,7 +8,6 @@ import { useWorkoutScreen } from "@/src/hooks/use-workout-screen";
 import { spacing } from "@/src/theme/spacing";
 import { router, useLocalSearchParams } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SET_TYPE_LABEL: Record<string, string> = {
   warmup: "WarmUp",
@@ -18,7 +17,6 @@ const SET_TYPE_LABEL: Record<string, string> = {
 };
 
 export default function WorkoutScreen() {
-  const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const {
     day,
@@ -36,7 +34,7 @@ export default function WorkoutScreen() {
   if (!day) {
     return (
       <Screen>
-        <View style={{ paddingTop: insets.top }}>
+        <View>
           <Text>Nie znaleziono dnia treningowego.</Text>
         </View>
       </Screen>
@@ -44,11 +42,7 @@ export default function WorkoutScreen() {
   }
 
   return (
-    <Screen>
-      <View style={[styles.headerLogoContainer, { paddingTop: insets.top }]}>
-        <Text style={styles.headerLogo}>myGym</Text>
-      </View>
-      <Text style={styles.headerTitle}>Workout Day</Text>
+    <Screen title="Workout Day">
       <Pressable onPress={() => router.back()} style={localStyles.backButton}>
         <Text style={localStyles.backButtonText}>← Wróć</Text>
       </Pressable>
