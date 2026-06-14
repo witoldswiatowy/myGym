@@ -5,6 +5,7 @@ import {
 } from "@/src/repositories/workout.repository";
 import { useEffect, useState } from "react";
 import { WorkoutSet } from "../models/WorkoutSet";
+import { useDebouncedValue } from "./use-debounced-value";
 
 type SetForm = {
   id: string;
@@ -64,6 +65,8 @@ export function useWorkoutScreen(trainingDayId: string | undefined) {
     exerciseId: string;
     setId: string;
   } | null>(null);
+
+  const debouncedSetsByExerciseId = useDebouncedValue(setsByExerciseId, 500); //by nie wywoływać aktualizacji przy każdym szybkim tapnięciu, tylko po chwili "uspokajania się" zmian
 
   function updateSetField(
     exerciseId: string,
@@ -128,6 +131,33 @@ export function useWorkoutScreen(trainingDayId: string | undefined) {
       },
     );
   }, [trainingDayId]);
+
+  useEffect(() => {
+    if (!trainingDayId) return; // ← nie zapisuj jeśli brak ID
+
+    // Konwertuj SetForm (stringi) na WorkoutSet (liczby) i zapisz
+    Object.entries(debouncedSetsByExerciseId).forEach(
+      ([exerciseId, formSets]) => {
+        formSets.forEach((formSet) => {
+          const workoutSet: WorkoutSet = {
+            id: formSet.id,
+            workoutExerciseId: formSet.workoutExerciseId,
+            index: formSet.index,
+            type: formSet.type,
+            weight: formSet.weight ? parseFloat(formSet.weight) : undefined,
+            weightUnit: formSet.weightUnit,
+            reps: formSet.reps ? parseInt(formSet.reps) : undefined,
+            done: formSet.done,
+          };
+
+          // Zapisz do AsyncStorage przez repozytorium
+          WorkoutRepository.updateSet(workoutSet).catch((error) =>
+            console.error("Error saving set:", error),
+          );
+        });
+      },
+    );
+  }, [debouncedSetsByExerciseId, trainingDayId]); // ← zależy od debounced stanu
 
   return {
     day,
