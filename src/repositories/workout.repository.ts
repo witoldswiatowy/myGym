@@ -78,6 +78,20 @@ export const WorkoutRepository = {
     //opcjonalnie można usprawnić i zamienić na aktualizację tylko tego jednego seta, ale to wymagałoby bardziej złożonej logiki i nie jest konieczne w tym przypadku, póki co trzymamy wszystko prosto.
   },
 
+  async updateSets(updatedSets: WorkoutSet[]): Promise<void> {
+    const sets = await getOrSeed(STORAGE_KEYS.workoutSets, SAMPLE_WORKOUT_SETS);
+
+    const byId = new Map(sets.map((s) => [s.id, s]));
+    for (const updated of updatedSets) {
+      byId.set(updated.id, updated); // zamień istniejący LUB dodaj nowy
+    }
+
+    await AsyncStorage.setItem(
+      STORAGE_KEYS.workoutSets,
+      JSON.stringify([...byId.values()]),
+    );
+  },
+
   async getWorkoutDetails(trainingDayId: string): Promise<WorkoutDetails> {
     const [day, exercises, sets] = await Promise.all([
       this.getTrainingDayById(trainingDayId),

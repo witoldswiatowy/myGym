@@ -51,6 +51,20 @@ function mapSetOrCreate(
   };
 }
 
+// Konwertuj SetForm (stringi) na WorkoutSet (liczby) i zapisz
+function toWorkoutSet(formSet: SetForm): WorkoutSet {
+  return {
+    id: formSet.id,
+    workoutExerciseId: formSet.workoutExerciseId,
+    index: formSet.index,
+    type: formSet.type,
+    weight: formSet.weight ? parseFloat(formSet.weight) : undefined,
+    weightUnit: formSet.weightUnit,
+    reps: formSet.reps ? parseInt(formSet.reps) : undefined,
+    done: formSet.done,
+  };
+}
+
 export function useWorkoutScreen(trainingDayId: string | undefined) {
   const [day, setDay] = useState<TrainingDay | null>(null);
   const [exercises, setExercises] = useState<WorkoutExerciseWithName[]>([]);
@@ -135,27 +149,17 @@ export function useWorkoutScreen(trainingDayId: string | undefined) {
   useEffect(() => {
     if (!trainingDayId) return; // ← nie zapisuj jeśli brak ID
 
-    // Konwertuj SetForm (stringi) na WorkoutSet (liczby) i zapisz
-    Object.entries(debouncedSetsByExerciseId).forEach(
-      ([exerciseId, formSets]) => {
-        formSets.forEach((formSet) => {
-          const workoutSet: WorkoutSet = {
-            id: formSet.id,
-            workoutExerciseId: formSet.workoutExerciseId,
-            index: formSet.index,
-            type: formSet.type,
-            weight: formSet.weight ? parseFloat(formSet.weight) : undefined,
-            weightUnit: formSet.weightUnit,
-            reps: formSet.reps ? parseInt(formSet.reps) : undefined,
-            done: formSet.done,
-          };
+    // Zapis przy debounce
+    // Spłaszcz wszystkie sety ze wszystkich ćwiczeń do jednej tablicy
+    const allSets = Object.values(debouncedSetsByExerciseId)
+      .flat()
+      .map(toWorkoutSet);
 
-          // Zapisz do AsyncStorage przez repozytorium
-          WorkoutRepository.updateSet(workoutSet).catch((error) =>
-            console.error("Error saving set:", error),
-          );
-        });
-      },
+    if (allSets.length === 0) return;
+
+    // Jeden zapis dla wszystkich setów — brak race condition
+    WorkoutRepository.updateSets(allSets).catch((error) =>
+      console.error("Error saving sets:", error),
     );
   }, [debouncedSetsByExerciseId, trainingDayId]); // ← zależy od debounced stanu
 
