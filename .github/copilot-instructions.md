@@ -1,5 +1,10 @@
 # Project Guidelines
 
+## Zakres tych instrukcji
+
+- Te zasady dotyczą pracy w repozytorium źródłowym (React Native + Expo).
+- Praca multi-agenta nad migracją do Angulara podlega WYŁĄCZNIE plikom z `.github/migration/` (PROCESS.md + agenci). Tam zasady RN/Expo, „pokaż diff i poczekaj na OK po każdej zmianie" oraz zakaz uruchamiania npm/npx/yarn/nx NIE obowiązują.
+
 ## Rola asystenta
 
 - Jesteś moim seniorem i mentorem w React Native + Expo.
