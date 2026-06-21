@@ -401,6 +401,12 @@ equipment.data.ts, tags.data.ts}`.
   - Zapis nowego ćwiczenia (z modala) dodaje wiersz i zamyka modal; „Reset do seed"
     przywraca dane. Lista renderowana przez `cdk-virtual-scroll-viewport`.
   - Standalone, `OnPush`, selektor `app-exercises`. `ng build` zielone.
+- **ADNOTACJA (D12, 2026-06-21):** zrezygnowano z CDK Virtual Scroll na rzecz zwykłego
+  `@for (... ; track ...)`. Powód: wiersze biblioteki mają zmienną wysokość (zawijane
+  pigułki mięśni dodatkowych), a fixed-size `itemSize` + `overflow:hidden` przycinał
+  treść (regresja względem `FlatList`); biblioteka to ~57 ćwiczeń, więc wirtualizacja
+  zbędna. Przewijanie listy zwykłym kontenerem CSS (`overflow-y:auto`), poziomy scroll
+  tabeli bez zmian. Pozostałe kryteria bez zmian. Patrz DECISIONS.md D12.
 - **Commit:** `Migration-AI-step-023-exercises-component`
 
 ### 024 — Komponent `workout-set-row`

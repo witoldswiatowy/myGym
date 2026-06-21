@@ -120,3 +120,76 @@
 - **Decyzja:** Nie blokujemy migracji. Zalecane (do wykonania przez człowieka poza
   procesem AI): przejście na parzysty Node LTS (np. 24.x) dla środowiska docelowego.
 - **Konsekwencje:** jeśli pojawią się błędy związane z Node, wraca jako blokada.
+
+## D11 — Kolizje nazw klas z globalnymi typami DOM (rozszerzenie D9/A)
+
+- **Data:** 2026-06-20
+- **Status:** zaakceptowana — **opcja B**
+- **Kontekst:** Komponent wspólny `app-screen` (krok 013) wg D9/A dałby klasę
+  `Screen`, która koliduje z globalnym typem DOM `interface Screen` (`window.screen`).
+  Kompiluje się czysto (klasa module-scoped przesłania typ globalny), ale powtarza
+  się tu wzorzec rozwiązany wcześniej dla `StorageService` (uniknięcie kolizji z
+  globalnym `Storage`).
+- **Decyzja:** **B — minimalny dyskryminator nazwy klasy.** Gdy nazwa klasy wg D9/A
+  kolidowałaby z globalnym typem DOM, dodajemy najmniejszy możliwy sufiks roli
+  (np. `Component`), zachowując kebab-case nazwę pliku i czysty selektor `app-*`.
+  Konkretnie: plik `screen.ts`, **klasa `ScreenComponent`**, selektor `app-screen`.
+- **Zasada ogólna (rozszerza D9/A):** kolizja z globalnym typem DOM (`Screen`,
+  `Storage`, `Document`, `Event`, `Location`, `History`, `Navigator`, itp.) →
+  świadomy wyjątek: dodaj sufiks roli do KLASY (`*Component`/`*Service`), NIE zmieniaj
+  nazwy pliku ani selektora. Spójne z wyjątkiem `StorageService` w D9.
+- **Konsekwencje:** krok 013 — klasa `ScreenComponent` (plik `screen.ts`, selektor
+  `app-screen`). Implementatorzy kolejnych kroków CP3+ stosują tę regułę przy
+  ewentualnych kolizjach (np. `history` → jeśli kolizja z globalnym `History`,
+  klasa `HistoryComponent`; w przeciwnym razie czyste D9/A bez sufiksu).
+
+## D12 — Lista ćwiczeń: zwykłe `@for` zamiast CDK Virtual Scroll
+
+- **Data:** 2026-06-21
+- **Status:** zaakceptowana — **opcja B**
+- **Kontekst:** PLAN.md kroku 023 nakazywał CDK Virtual Scroll (odpowiednik `FlatList`
+  z RN). Wariant fixed-size (`itemSize`) zakłada jednolitą wysokość wiersza, a wiersze
+  biblioteki ćwiczeń mają zmienną wysokość (pigułki mięśni dodatkowych zawijają się
+  do >2 linii). Fixed-size + `overflow:hidden` przycinał treść wierszy = regresja
+  zachowania względem RN (`FlatList` rośnie do treści). Biblioteka to 57 ćwiczeń
+  (dane seed) — wirtualizacja daje marginalny zysk wydajności.
+- **Decyzja:** **B — rezygnacja z CDK Virtual Scroll na rzecz zwykłego `@for`** w ekranie
+  `exercises`. Pełna treść wierszy, zero przycięć. Zgodne z PROCESS §2 („zachowanie >
+  wierność implementacji `FlatList`") oraz product-context (poprawność danych).
+- **Konsekwencje:** krok 023 nie używa `ScrollingModule`/`cdk-virtual-scroll-viewport`/
+  `*cdkVirtualFor` — zamiast tego `@for` z `track`. Usunięty sztywny `itemSize`/
+  `overflow:hidden` przycinający wiersze. Przewijanie listy zwykłym kontenerem CSS.
+  PLAN.md kroku 023 zaktualizowany. (Uwaga ogólna: gdyby w przyszłości pojawiła się
+  bardzo długa lista o stałej wysokości wiersza, virtual scroll można rozważyć
+  ponownie — ta decyzja dotyczy biblioteki ćwiczeń o zmiennej wysokości wiersza.)
+
+## D13 — Ikony paska nawigacji (tab-bar): Material Symbols
+
+- **Data:** 2026-06-21
+- **Status:** zrealizowana — **opcja B** (krok 030, commit `86e7c51`)
+- **Kontekst:** Źródło RN (`app/_layout.tsx`) używa ikon Ionicons z `@expo/vector-icons`
+  w pasku zakładek (Home=`home`, Workout=`barbell`, History=`time`, Planner=`calendar`,
+  Menu=`menu`) — ikona + etykieta pod spodem. Projekt docelowy Angular nie miał
+  skonfigurowanej żadnej biblioteki ikon (grep `mat-icon`/Material Symbols/Ionicons = 0).
+  Implementator kroku 030 zrealizował wariant minimalny (same etykiety tekstowe) i zgłosił
+  niejednoznaczność do eskalacji (wprowadzenie biblioteki ikon = nowa decyzja architektoniczna).
+- **Decyzja:** **B — wprowadzamy Material Symbols** (font ikon zgodny z Angular Material,
+  D2) i mapujemy ikony paska 1:1 wg sensu źródła: Home→`home`, Workout→`fitness_center`,
+  History→`history`, Planner→`calendar_month`, Menu→`menu`. Pasek pokazuje ikonę + etykietę
+  (parytet wizualny z RN). Realizacja przez `<mat-icon>` (`MatIconModule`) z fontem Material
+  Symbols/Material Icons skonfigurowanym w `index.html`/`styles.scss`.
+- **Konsekwencje:** dodanie/konfiguracja fontu ikon (link w `index.html` lub import w
+  `styles.scss`) + użycie `MatIconModule` w komponencie `TabBar`. Krok 030 przerobiony
+  z wariantu tekstowego na ikona+etykieta. Mapowanie ikon dobrane na najbliższe odpowiedniki
+  Material (źródłowe nazwy Ionicons nie istnieją 1:1 w Material). Pozostałe kryteria 030
+  (5 pozycji, `routerLink`/`routerLinkActive` D5, Home `exact`, `/exercises`+`/about-me`
+  poza paskiem, brak safe-area D4) bez zmian.
+- **Realizacja (2026-06-21, krok 030, commit `86e7c51`):** komponent `TabBar`
+  (`src/app/core/layout/tab-bar/`) z `MatIconModule` i `<mat-icon>` (ligatura) nad
+  etykietą; font Material Icons z istniejącego linku w `src/index.html` (zasób zastany
+  z `ng add @angular/material`, D2 — bez dublowania, bez nowej zależności). Mapowanie
+  zrealizowane 1:1: home→`home`, fitness_center, history, calendar_month, menu.
+  Zweryfikowano przez Reviewer-Fixera (1 iteracja): `tsc`=0, `ng build` zielone,
+  `ng test` 122/122. UWAGA: link Material Icons to CDN Google Fonts — przy braku sieci
+  ikony mogą się nie załadować (product-context offline-first); ewentualny self-host
+  fontu jako temat do rozważenia w przyszłości (poza zakresem 030).
