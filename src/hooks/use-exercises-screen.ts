@@ -1,6 +1,6 @@
-import { ExerciseFormValues } from "@/src/components/exercises/add-exercise-modal";
 import { Exercise } from "@/src/models/Exercise";
 import { createExerciseFromFormValues } from "@/src/models/exercise.factory";
+import type { ExerciseFormValues } from "@/src/models/ExerciseFormValues";
 import { ExerciseRepository } from "@/src/repositories/exercise.repository";
 import {
   buildExerciseLookups,

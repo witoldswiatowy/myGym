@@ -2,17 +2,9 @@ import { localStyles } from "@/src/components/exercises/exercises.style";
 import { EQUIPMENT } from "@/src/data/equipment.data";
 import { MUSCLES } from "@/src/data/muscles.data";
 import { TAGS } from "@/src/data/tags.data";
+import type { ExerciseFormValues } from "@/src/models/ExerciseFormValues";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import ExerciseForm from "./exercise-form";
-
-export interface ExerciseFormValues {
-  name: string;
-  nameEn: string;
-  primaryMuscleId: string;
-  secondaryMuscleIds: string[];
-  equipmentIds: string[];
-  tagIds: string[];
-}
 
 interface AddExerciseModalProps {
   visible: boolean;

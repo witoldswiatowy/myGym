@@ -1,10 +1,10 @@
 import { localStyles } from "@/src/components/exercises/exercises.style";
 import { Equipment } from "@/src/models/Equipment";
+import type { ExerciseFormValues } from "@/src/models/ExerciseFormValues";
 import { Muscle } from "@/src/models/Muscle";
 import { Tag } from "@/src/models/Tag";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import type { ExerciseFormValues } from "./add-exercise-modal";
 
 interface ExerciseFormProps {
   muscles: Muscle[];

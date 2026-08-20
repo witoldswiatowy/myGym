@@ -1,5 +1,5 @@
-import { ExerciseFormValues } from "@/src/components/exercises/add-exercise-modal";
 import { Exercise } from "@/src/models/Exercise";
+import type { ExerciseFormValues } from "@/src/models/ExerciseFormValues";
 
 // Buduje domenowy model Exercise z danych formularza, generując unikalne id
 export function createExerciseFromFormValues(
